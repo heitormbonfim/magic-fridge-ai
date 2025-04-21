@@ -23,6 +23,10 @@ public class FoodService {
         return foodItemRepository.findAll();
     }
 
+    public Optional<FoodItem> findFoodById(Long id) {
+        return foodItemRepository.findById(id);
+    }
+
     public FoodItem updateFoodItem(Long id, FoodItem foodItem) {
         Optional<FoodItem> foodItemFound = foodItemRepository.findById(id);
         if (foodItemFound.isPresent()) {
