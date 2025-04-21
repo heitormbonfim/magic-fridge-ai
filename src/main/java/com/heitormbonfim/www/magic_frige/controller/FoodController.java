@@ -2,8 +2,13 @@ package com.heitormbonfim.www.magic_frige.controller;
 
 import com.heitormbonfim.www.magic_frige.model.FoodItem;
 import com.heitormbonfim.www.magic_frige.service.FoodService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/food")
@@ -15,23 +20,42 @@ public class FoodController {
     }
 
     @PostMapping("/add")
-    public RequestEntity<?> createFood(@RequestBody FoodItem newFood) {
-        return null;
+    public ResponseEntity<?> createFood(@RequestBody FoodItem newFood) {
+        FoodItem newFoodItem = foodService.saveFood(newFood);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newFoodItem);
     }
 
-    public RequestEntity<?> getFoods() {
-        return null;
+    @GetMapping("/all")
+    public ResponseEntity<List<FoodItem>> getFoods() {
+        List<FoodItem> foods = foodService.getAllFoods();
+        return ResponseEntity.ok(foods);
     }
 
-    public RequestEntity<?> findFoodById() {
-        return null;
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findFoodById(@PathVariable Long id) {
+        Optional<FoodItem> foodFound = foodService.findFoodById(id);
+        if (foodFound.isPresent()) {
+            FoodItem foodItem = foodFound.get();
+            return ResponseEntity.ok(foodItem);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
     }
 
-    public RequestEntity<?> updateFood() {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateFood(@PathVariable Long id, @RequestBody FoodItem foodItem) {
+        return foodService.findFoodById(id)
+                .map(existing -> {
+                    foodItem.setId(existing.getId());
+                    FoodItem updated = foodService.saveFood(foodItem);
+                    return ResponseEntity.ok(updated);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    public RequestEntity<?> deleteFood() {
-        return null;
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFood(@PathVariable Long id) {
+        foodService.deleteFoodItem(id);
+        return ResponseEntity.noContent().build();
     }
 }
