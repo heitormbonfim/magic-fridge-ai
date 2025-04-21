@@ -27,17 +27,6 @@ public class FoodService {
         return foodItemRepository.findById(id);
     }
 
-    public FoodItem updateFoodItem(Long id, FoodItem foodItem) {
-        Optional<FoodItem> foodItemFound = foodItemRepository.findById(id);
-        if (foodItemFound.isPresent()) {
-            FoodItem foodItemToUpdate = foodItemFound.get();
-            foodItem.setId(foodItemToUpdate.getId());
-            foodItemRepository.save(foodItem);
-            return foodItem;
-        }
-        return null;
-    }
-
     public void deleteFoodItem(Long id) {
         foodItemRepository.deleteById(id);
     }
