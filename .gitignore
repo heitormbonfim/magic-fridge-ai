@@ -35,3 +35,4 @@ build/
 
 ### Files ###
 todo.txt
+.env
