@@ -3,7 +3,6 @@ package com.heitormbonfim.www.magic_frige.controller;
 import com.heitormbonfim.www.magic_frige.model.FoodItem;
 import com.heitormbonfim.www.magic_frige.service.FoodService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
