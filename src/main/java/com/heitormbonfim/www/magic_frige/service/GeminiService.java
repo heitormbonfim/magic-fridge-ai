@@ -1,6 +1,7 @@
 package com.heitormbonfim.www.magic_frige.service;
 
 import com.heitormbonfim.www.magic_frige.model.FoodItem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class GeminiService {
     private final WebClient webClient;
-    private final String apiKey = System.getenv("GEMINI_API_KEY");
-
-    public GeminiService(WebClient webClient) {
-        this.webClient = webClient;
-    }
 
     public Mono<String> generateRecipe(List<FoodItem> foodItems) {
         String foods = foodItems.stream().map(item ->
