@@ -99,4 +99,15 @@ This starts the same Spring Boot app from the fat JAR ([Home][1]).
      magic-frige
    ```
 
+   or
+
+   ```bash
+   docker build \
+   --build-arg DB_USERNAME=magic_fridge_ai \
+   --build-arg DB_PASSWORD=magic_fridge_ai \
+   --build-arg DB_URL="jdbc:h2:file:./data/MagicFridgeAi" \
+   --build-arg GEMINI_API_KEY=AIzaSyBL6cw3J5C5AAXM3C-j5OOTmY21HjAjisE \
+   -t magic-fridge .
+   ```
+
 No changes to the Dockerfile are needed—Docker will inject each `KEY=VALUE` from your `.env` at runtime ([Stack Overflow][4]).
