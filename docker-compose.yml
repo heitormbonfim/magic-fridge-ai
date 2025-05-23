@@ -1,26 +1,35 @@
+version: "3.8"
+
 services:
   db:
     image: postgres:15
+    restart: always
+    container_name: postgresql-db
     environment:
-      POSTGRES_DB: my-postgres
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-#   app:
-#     build:
-#       context: .
-#       dockerfile: Dockerfile
-#     environment:
-#       # These will be passed to your Spring Boot app inside the container
-#       DB_USERNAME: postgres
-#       DB_PASSWORD: postgres
-#       DB_URL: jdbc:postgresql://db:5432/tasksdb # Connect to the 'db' service
-#     ports:
-#       - "8080:8080"
-#     depends_on:
-#       - db
-# volumes:
-#   postgres-data:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: mysecretpassword
+        DB_URL: jdbc:postgresql://db:5432/postgres
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    depends_on:
+      - db
+    restart: on-failure
+    ports:
+      - "8080:8080"
+
+
+volumes:
+  postgres-data:
